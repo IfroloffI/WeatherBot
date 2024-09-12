@@ -2,13 +2,16 @@ from telebot import *
 from utils.tokens import *
 import requests
 
-def get_weather(coords):
-    lat, lon = coords
-    headers = {
-        'X-Yandex-Weather-Key': get_weather_token()
-    }
-    response = requests.get('https://api.weather.yandex.ru/v2/forecast?lat=52.37125&lon=4.89388', headers=headers)
-    return response
+def get_weather(cords):
+    lat, lon = cords
+    try:
+        headers = {
+            'X-Yandex-Weather-Key': get_weather_token()
+        }
+        request = requests.get("https://api.weather.yandex.ru/v2/forecast?lat=" + str(lat) + "&lon=" + str(lon), headers=headers).json()
+        return request["fact"]
+    except:
+        return "Error"
 
 def get_coords_by_name(name):
     map_token = get_map_token()
