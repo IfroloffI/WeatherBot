@@ -27,12 +27,8 @@ def get_cords_by_name(name):
     response_text = "https://geocode-maps.yandex.ru/1.x/?apikey=" + map_token + "&geocode=" + name + "&format=json"
     request = requests.get(response_text).json()
     try:
-        # TODO: проблемы с поиском города
-        cords = request["response"]["GeoObjectCollection"]["metaDataProperty"]["GeocoderResponseMetaData"]["boundedBy"][
-            "Envelope"]
-        lower_x, lower_y = map(float, cords["lowerCorner"].split())
-        upper_x, upper_y = map(float, cords["upperCorner"].split())
-        x, y = (lower_x + upper_x) / 2, (lower_y + upper_y) / 2,
+        cords = request["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]["Point"]["pos"]
+        x, y = map(float, cords.split())
         return (x, y)
     except:
         return "Error"
